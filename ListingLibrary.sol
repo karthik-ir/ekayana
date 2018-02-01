@@ -44,4 +44,22 @@ library ListingLibrary {
         function getListingCount(address db) internal returns(uint) {
         return EthMeetDB(db).getUIntValue(sha3("listing/count"));
     }
+
+    function getListingIds(address db) internal returns(uint[] listingIds){
+        uint listingCount = getListingCount(db);
+        listingIds = new uint[](listingCount);
+        uint j=0;
+        for(uint i=listingCount;i>0;i--) {
+            uint8 listingStatus = getStatus(db, i);
+            if ((listingStatus == 1 || listingStatus == 2)) {
+                listingIds[j] = i;
+                j++;
+            }
+        }
+        return SharedLibrary.take(j, listingIds);
+    }
+
+    function getCost(address db, uint listingId) internal returns(uint) {
+        return EthMeetDB(db).getUIntValue(sha3("listing/cost",listingId));
+    }
 } 

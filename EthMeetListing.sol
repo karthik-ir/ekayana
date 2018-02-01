@@ -16,8 +16,15 @@ contract EthMeetListing  is EthMeetSetter {
 
     } 
 
-    function getListingCount(address db) returns(uint) {
-        return ListingLibrary.getListingCount(db);
+    function getListingCount() returns(uint) {
+        return ListingLibrary.getListingCount(ethMeetDB);
     }
-   
+
+    function getListingIds() returns(uint[]){
+        return ListingLibrary.getListingIds(ethMeetDB);
+    }
+
+    function getCost( uint listingId) returns(uint){
+        return ListingLibrary.getCost(ethMeetDB,listingId);
+    }
 }
