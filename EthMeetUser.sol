@@ -17,4 +17,7 @@ contract EthMeetUser is EthMeetSetter {
         UserLibrary.setUser(ethMeetDB, msg.sender, name, email);
     }
 
+    function getUsers() public view returns(address[]){
+        return UserLibrary.getAllUsers(ethMeetDB);
+    }
 }

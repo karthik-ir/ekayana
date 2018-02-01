@@ -32,4 +32,8 @@ library UserLibrary {
      function hasStatus(address db, address userId, uint8 status) internal returns(bool) {
         return status == EthMeetDB(db).getUInt8Value(sha3("user/status", userId));
     }
+
+        function getAllUsers(address db) internal returns(address[]) {
+        return SharedLibrary.getAddressArray(db, "user/ids", "user/count");
+    }
 }
