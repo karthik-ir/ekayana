@@ -28,4 +28,8 @@ library UserLibrary {
     function getStatus(address db, address userId) internal returns(uint8) {
         return EthMeetDB(db).getUInt8Value(sha3("user/status", userId));
     }
+
+     function hasStatus(address db, address userId, uint8 status) internal returns(bool) {
+        return status == EthMeetDB(db).getUInt8Value(sha3("user/status", userId));
+    }
 }

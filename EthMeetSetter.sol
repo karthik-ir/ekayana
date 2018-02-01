@@ -1,10 +1,10 @@
 pragma solidity ^0.4.19;
 
-import "ownable.sol";
-import "userLibrary.sol";
+import "./ownable.sol";
+import "./UserLibrary.sol";
 
-contract EthlanceSetter is Ownable {
-    address public ethlanceDB;
+contract EthMeetSetter is Ownable {
+    address public ethMeetDB;
     uint8 public smartContractStatus;
     event onSmartContractStatusSet(uint8 status);
 
@@ -13,10 +13,10 @@ contract EthlanceSetter is Ownable {
       _;
     }
     modifier onlyActiveUser {
-      if (!UserLibrary.hasStatus(ethlanceDB, msg.sender, 1)) throw;
+      if (!UserLibrary.hasStatus(ethMeetDB, msg.sender, 1)) throw;
       _;
     }
-
+ 
     function setSmartContractStatus(
           uint8 _status
     )
@@ -24,9 +24,5 @@ contract EthlanceSetter is Ownable {
     {
         smartContractStatus = _status;
         onSmartContractStatusSet(_status);
-    }
-
-    function getConfig(bytes32 key) constant returns(uint) {
-        return EthlanceDB(ethlanceDB).getUIntValue(sha3("config/", key));
     }
 }
