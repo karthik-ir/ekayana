@@ -41,4 +41,7 @@ library ListingLibrary {
         EthMeetDB(db).setUInt8Value(sha3("listing/status", listingId), status);
     }
     
+        function getListingCount(address db) internal returns(uint) {
+        return EthMeetDB(db).getUIntValue(sha3("listing/count"));
+    }
 } 

@@ -13,10 +13,11 @@ contract EthMeetListing  is EthMeetSetter {
     
     function addNewListing(string _title, uint256 _cost) public {
         var listingID = ListingLibrary.setListing(ethMeetDB,msg.sender,0,_title,_cost);
-        
+
     } 
-    
-    function getListingDetails() public view returns(string,uint256,uint256,address[]){
-        return(title,cost,listingDatetime,bookings);
+
+    function getListingCount(address db) returns(uint) {
+        return ListingLibrary.getListingCount(db);
     }
+   
 }
