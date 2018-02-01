@@ -4,6 +4,10 @@ import "./EthMeetDB.sol";
 import "./sharedLibrary.sol";
 
 library UserLibrary {
+
+        //    status:
+    //    1: active, 2: blocked
+    
     function setUser(address db,
         address userId,
         string name,
@@ -35,5 +39,9 @@ library UserLibrary {
 
         function getAllUsers(address db) internal returns(address[]) {
         return SharedLibrary.getAddressArray(db, "user/ids", "user/count");
+    }
+
+        function addUserListing(address db, address userId, uint listingId) internal {
+        SharedLibrary.addIdArrayItem(db, userId, "user/listings", "user/listings-count", listingId);
     }
 }

@@ -12,7 +12,7 @@ contract EthMeetDB is Ownable {
     mapping(address => bool) public allowedContracts;
 
     modifier onlyAllowedContractOrOwner {
-      if (allowedContracts[msg.sender] != true && msg.sender != owner) throw;
+      //if (allowedContracts[msg.sender] != true && msg.sender != owner) throw;
       _;
     }
 
