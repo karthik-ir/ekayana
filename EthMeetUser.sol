@@ -1,12 +1,9 @@
 pragma solidity ^0.4.8;
 
-import "./sharedLibrary.sol";
-import "./strings.sol";
 import "./EthMeetSetter.sol";
 import "./UserLibrary.sol";
 
 contract EthMeetUser is EthMeetSetter {
-    using strings for *;
     
     function EthMeetUser(address _ethMeetDB) public {
         if(_ethMeetDB == 0x0) throw;
@@ -17,7 +14,15 @@ contract EthMeetUser is EthMeetSetter {
         UserLibrary.setUser(ethMeetDB, msg.sender, name, email);
     }
 
-    function getUsers() public view returns(address[]){
+    function getUsers() public view returns(address[]) {
         return UserLibrary.getAllUsers(ethMeetDB);
+    }
+    
+    function getAppliedBookings() public view returns(uint[]) {
+        return UserLibrary.getAttendeeContracts(ethMeetDB, msg.sender);
+    }
+
+    function getReceivedBookings() public view returns(uint[]) {
+        return UserLibrary.getHostContracts(ethMeetDB, msg.sender);
     }
 }

@@ -62,4 +62,16 @@ library ListingLibrary {
     function getCost(address db, uint listingId) internal returns(uint) {
         return EthMeetDB(db).getUIntValue(sha3("listing/cost",listingId));
     }
+
+    function getHostUser(address db, uint listingId) internal returns(address) {
+        return EthMeetDB(db).getAddressValue(sha3("listing/host",listingId));
+    }
+
+    function addBooking(address db, uint listingId, uint bookingId) internal {
+        SharedLibrary.addIdArrayItem(db,listingId,"listing/booking","listing/booking-count",bookingId);
+    }
+
+    function getBookings(address db, uint listingId) internal returns(uint[]) {
+        return SharedLibrary.getIdArray(db,listingId, "listing/booking","listing/booking-count");
+    }
 } 

@@ -7,7 +7,7 @@ library UserLibrary {
 
         //    status:
     //    1: active, 2: blocked
-    
+
     function setUser(address db,
         address userId,
         string name,
@@ -43,5 +43,21 @@ library UserLibrary {
 
         function addUserListing(address db, address userId, uint listingId) internal {
         SharedLibrary.addIdArrayItem(db, userId, "user/listings", "user/listings-count", listingId);
+    }
+
+    function addAttendeeContract(address db, address userId, uint contractId) internal {
+        SharedLibrary.addIdArrayItem(db, userId, "attendee/contracts", "attendee/contracts-count", contractId);
+    }
+    
+    function getAttendeeContracts(address db, address userId) internal returns(uint[]) {
+        return SharedLibrary.getIdArray(db, userId, "attendee/contracts", "attendee/contracts-count");
+    }
+    
+    function addHostContract(address db, address userId, uint contractId) internal {
+        SharedLibrary.addIdArrayItem(db, userId, "host/contracts", "host/contracts-count", contractId);
+    }
+    
+    function getHostContracts(address db, address userId) internal returns(uint[]) {
+        return SharedLibrary.getIdArray(db, userId, "host/contracts", "host/contracts-count");
     }
 }
