@@ -14,4 +14,7 @@ contract EthMeetBooking is EthMeetSetter {
         return BookingLibrary.book(ethMeetDB, listingId, msg.sender);
     }
 
+    function cancelBooking(uint listingId) public returns(uint) {
+        return BookingLibrary.cancel(ethMeetDB, listingId, msg.sender);
+    }
 }

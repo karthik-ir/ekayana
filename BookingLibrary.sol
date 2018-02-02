@@ -11,17 +11,17 @@ library BookingLibrary {
     
     function book(address db, uint listingId, address sender) 
             internal returns (uint bookingId) 
-            {
-                var hostUserId = ListingLibrary.getHostUser(db,listingId);
-                require(hostUserId != 0x0);
-                require(ListingLibrary.getStatus(db, listingId) == 1);
-                bookingId = getBooking(db,sender,listingId);
-                if (bookingId == 0) {
-                    bookingId = SharedLibrary.createNext(db,"booking/count");
-                    UserLibrary.addAttendeeContract(db, sender,bookingId);
-                    UserLibrary.addHostContract(db,hostUserId,bookingId);
-                    ListingLibrary.addBooking(db,listingId,bookingId);
-                } else if (getBookingCreatedOn(db, bookingId) != 0) throw;
+    {
+        var hostUserId = ListingLibrary.getHostUser(db,listingId);
+        require(hostUserId != 0x0);
+        require(ListingLibrary.getStatus(db, listingId) == 1);
+        bookingId = getBooking(db,sender,listingId);
+        if (bookingId == 0) {
+            bookingId = SharedLibrary.createNext(db,"booking/count");
+            UserLibrary.addAttendeeContract(db, sender,bookingId);
+            UserLibrary.addHostContract(db,hostUserId,bookingId);
+            ListingLibrary.addBooking(db,listingId,bookingId);
+        } else if (getBookingCreatedOn(db, bookingId) != 0) throw;
 
         setUserBookingIndex(db, bookingId, sender, listingId);
         EthMeetDB(db).setUIntValue(sha3("booking/created-on",listingId),now);
@@ -29,6 +29,16 @@ library BookingLibrary {
         return bookingId;
     }
     
+    function cancel(address db, uint listingId, address sender) internal returns(uint bookingId) {
+        bookingId = getBooking(db,sender,listingId);
+        if (bookingId == 0) {
+            throw;
+        }
+        setStatus(db, bookingId,5);
+
+        return bookingId;
+    }
+
     function setUserBookingIndex(address db, uint bookingId, address userId, uint listingId) internal {
         EthMeetDB(db).setAddressValue(sha3("booking/customer", bookingId), userId);
         EthMeetDB(db).setUIntValue(sha3("booking/listing", bookingId), listingId);
