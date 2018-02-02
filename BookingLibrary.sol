@@ -22,9 +22,17 @@ library BookingLibrary {
                     UserLibrary.addHostContract(db,hostUserId,bookingId);
                     ListingLibrary.addBooking(db,listingId,bookingId);
                 } else if (getBookingCreatedOn(db, bookingId) != 0) throw;
+
+        setUserBookingIndex(db, bookingId, sender, listingId);
         EthMeetDB(db).setUIntValue(sha3("booking/created-on",listingId),now);
         setStatus(db, bookingId, 2);
         return bookingId;
+    }
+    
+    function setUserBookingIndex(address db, uint bookingId, address userId, uint listingId) internal {
+        EthMeetDB(db).setAddressValue(sha3("booking/customer", bookingId), userId);
+        EthMeetDB(db).setUIntValue(sha3("booking/listing", bookingId), listingId);
+        EthMeetDB(db).setUIntValue(sha3("booking/customer+listing", userId, listingId), bookingId);
     }
 
     function setStatus(address db, uint bookingId, uint8 status) {
