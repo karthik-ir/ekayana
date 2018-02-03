@@ -4,28 +4,39 @@ import "./EthMeetDB.sol";
 import "./sharedLibrary.sol";
 import "./UserLibrary.sol";
 import "./ListingLibrary.sol";
+import "./EthMeetWallet.sol";
 
 library BookingLibrary {
         //    status:
     //    1: invited, 2: pending proposal, 3: accepted, 4: finished, 5: cancelled
     
-    function book(address db, uint listingId, address sender) 
+    function book(address db, uint listingId, address sender, uint value) 
             internal returns (uint bookingId) 
     {
         var hostUserId = ListingLibrary.getHostUser(db,listingId);
+        var cost = ListingLibrary.getCost(db,listingId);
         require(hostUserId != 0x0);
         require(ListingLibrary.getStatus(db, listingId) == 1);
+        require(value == cost);
         bookingId = getBooking(db,sender,listingId);
         if (bookingId == 0) {
             bookingId = SharedLibrary.createNext(db,"booking/count");
             UserLibrary.addAttendeeContract(db, sender,bookingId);
             UserLibrary.addHostContract(db,hostUserId,bookingId);
             ListingLibrary.addBooking(db,listingId,bookingId);
-        } else if (getBookingCreatedOn(db, bookingId) != 0) throw;
+            EthMeetWallet wallet = new EthMeetWallet();
 
-        setUserBookingIndex(db, bookingId, sender, listingId);
-        EthMeetDB(db).setUIntValue(sha3("booking/created-on",listingId),now);
-        setStatus(db, bookingId, 2);
+            setUserBookingIndex(db, bookingId, sender, listingId);
+            EthMeetDB(db).setUIntValue(sha3("booking/created-on",listingId),now);
+            setStatus(db, bookingId, 2);
+            //Create Contract wallet
+            EthMeetDB(db).setAddressValue(sha3("booking/wallet",bookingId), wallet);
+            
+            //Send money to the contract
+            wallet.receiveFunds.value(cost);
+
+        } else if (getBookingCreatedOn(db, bookingId) != 0) throw;
+        
         return bookingId;
     }
     
@@ -35,7 +46,10 @@ library BookingLibrary {
             throw;
         }
         setStatus(db, bookingId,5);
-
+        address walletID = EthMeetDB(db).getAddressValue(sha3("booking/wallet",bookingId));
+        uint cost = ListingLibrary.getCost(db,listingId);
+        EthMeetWallet(walletID).sendFunds(sender,cost);
+        //Settle money between the host and attendee. And kill the contract.
         return bookingId;
     }
 
@@ -55,5 +69,10 @@ library BookingLibrary {
 
     function getBookingCreatedOn(address db, uint bookingId) internal returns(uint) {
         return EthMeetDB(db).getUIntValue(sha3("booking/created-on",bookingId));
+    }
+
+    function getWallet(address db, uint listingId, address sender) internal returns(address) {
+        var bookingId = getBooking(db,sender,listingId);
+        return EthMeetDB(db).getAddressValue(sha3("booking/wallet",bookingId));
     }
 }
