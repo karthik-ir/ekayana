@@ -35,7 +35,7 @@ contract EthMeetDB is Ownable {
         }
     }
 
-    function allowedContractsCount() constant returns(uint count) {
+    function allowedContractsCount() public view returns(uint count) {
         for (uint i = 0; i < allowedContractsKeys.length; i++) {
             if (allowedContracts[allowedContractsKeys[i]]) {
                 count++;
@@ -44,7 +44,7 @@ contract EthMeetDB is Ownable {
         return count;
     }
 
-    function getAllowedContracts() constant returns(address[] addresses) {
+    function getAllowedContracts() public view returns(address[] addresses) {
         addresses = new address[](allowedContractsCount());
         for (uint i = 0; i < allowedContractsKeys.length; i++) {
             if (allowedContracts[allowedContractsKeys[i]]) {
@@ -56,7 +56,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => uint8) UInt8Storage;
 
-    function getUInt8Value(bytes32 record) constant returns (uint8){
+    function getUInt8Value(bytes32 record) view returns (uint8){
         return UInt8Storage[record];
     }
 
@@ -74,7 +74,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => uint) UIntStorage;
 
-    function getUIntValue(bytes32 record) constant returns (uint){
+    function getUIntValue(bytes32 record) public view returns (uint){
         return UIntStorage[record];
     }
 
@@ -104,11 +104,11 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => string) StringStorage;
 
-    function getStringValue(bytes32 record) constant returns (string) {
+    function getStringValue(bytes32 record) public view returns (string) {
         return StringStorage[record];
     }
 
-    function getStringValueAsBytes32(bytes32 record) constant returns(bytes32 result) {
+    function getStringValueAsBytes32(bytes32 record) public view returns(bytes32 result) {
         bytes memory tempString = bytes(getStringValue(record));
         if (tempString.length == 0) {
             throw;
@@ -133,7 +133,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => address) AddressStorage;
 
-    function getAddressValue(bytes32 record) constant returns (address){
+    function getAddressValue(bytes32 record) public view returns (address){
         return AddressStorage[record];
     }
 
@@ -151,7 +151,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => bytes) BytesStorage;
 
-    function getBytesValue(bytes32 record) constant returns (bytes){
+    function getBytesValue(bytes32 record) public view returns (bytes){
         return BytesStorage[record];
     }
 
@@ -169,7 +169,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => bytes32) Bytes32Storage;
 
-    function getBytes32Value(bytes32 record) constant returns (bytes32){
+    function getBytes32Value(bytes32 record) public view returns (bytes32){
         return Bytes32Storage[record];
     }
 
@@ -187,7 +187,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => bool) BooleanStorage;
 
-    function getBooleanValue(bytes32 record) constant returns (bool){
+    function getBooleanValue(bytes32 record) public view returns (bool){
         return BooleanStorage[record];
     }
 
@@ -205,7 +205,7 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => int) IntStorage;
 
-    function getIntValue(bytes32 record) constant returns (int){
+    function getIntValue(bytes32 record) public view returns (int){
         return IntStorage[record];
     }
 
@@ -221,7 +221,7 @@ contract EthMeetDB is Ownable {
       delete IntStorage[record];
     }
 
-    function booleanToUInt(bool x) constant returns (uint) {
+    function booleanToUInt(bool x) public view returns (uint) {
         if (x) {
             return 1;
         } else {
@@ -229,7 +229,7 @@ contract EthMeetDB is Ownable {
         }
     }
 
-    function getUIntValueConverted(bytes32 record, uint8 uintType) constant returns(uint) {
+    function getUIntValueConverted(bytes32 record, uint8 uintType) public view returns(uint) {
         if (uintType == 1) {
             return booleanToUInt(getBooleanValue(record));
         } else if (uintType == 2) {
@@ -245,7 +245,7 @@ contract EthMeetDB is Ownable {
         }
     }
 
-    function getUIntTypesCount(uint8[] types) constant returns(uint count) {
+    function getUIntTypesCount(uint8[] types) public view returns(uint count) {
         count = 0;
         for (uint i = 0; i < types.length ; i++) {
             if (types[i] != 7) {
@@ -260,7 +260,7 @@ contract EthMeetDB is Ownable {
 //        uint[] arrayItemsIds,
 //        bytes32[] arrayItemsCountRecords
 //    )
-//        public constant returns
+//        public public view returns
 //    (
 //        uint[] arrayItems
 //    )
@@ -281,7 +281,7 @@ contract EthMeetDB is Ownable {
 //    }
 
     function getEntityList(bytes32[] records, uint8[] types)
-        public constant returns
+        public view returns
     (
         uint[] items,
         string strs

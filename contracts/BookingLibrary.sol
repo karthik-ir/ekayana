@@ -55,7 +55,7 @@ library BookingLibrary {
         EthMeetDB(db).setUIntValue(sha3("booking/customer+listing", userId, listingId), bookingId);
     }
 
-    function setStatus(address db, uint bookingId, uint8 status) {
+    function setStatus(address db, uint bookingId, uint8 status) internal {
         EthMeetDB(db).setUInt8Value(sha3("booking/status",bookingId),status);
     }
 
