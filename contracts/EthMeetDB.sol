@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "./Ownable.sol";
-import "./safeMath.sol";
+import "./SafeMath.sol";
 import "./strings.sol";
 
 
@@ -104,8 +104,19 @@ contract EthMeetDB is Ownable {
 
     mapping(bytes32 => string) StringStorage;
 
-    function getStringValue(bytes32 record) constant returns (string){
+    function getStringValue(bytes32 record) constant returns (string) {
         return StringStorage[record];
+    }
+
+    function getStringValueAsBytes32(bytes32 record) constant returns(bytes32 result) {
+        bytes memory tempString = bytes(getStringValue(record));
+        if (tempString.length == 0) {
+            throw;
+        }
+
+        assembly {
+            result := mload(add(tempString, 32))
+        }
     }
 
     function setStringValue(bytes32 record, string value)

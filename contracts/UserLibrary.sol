@@ -19,13 +19,11 @@ library UserLibrary {
             SharedLibrary.addArrayItem(db, "user/ids", "user/count", userId);
         }
 
-
-            EthMeetDB(db).setStringValue(sha3("user/name", userId), name);
+        EthMeetDB(db).setStringValue(sha3("user/name", userId), name);
         EthMeetDB(db).setStringValue(sha3("user/email", userId), email);
-        
-        }
-        
-         function userExists(address db, address userId) internal returns(bool) {
+    }
+
+    function userExists(address db, address userId) internal returns(bool) {
         return getStatus(db, userId) > 0;
     }
     

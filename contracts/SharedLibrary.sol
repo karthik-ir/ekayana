@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "./EthMeetDB.sol";
-import "./safeMath.sol";
+import "./SafeMath.sol";
 import "./strings.sol";
 
 library SharedLibrary {
@@ -596,4 +596,5 @@ library SharedLibrary {
         }
         return false;
     }
+
 }
