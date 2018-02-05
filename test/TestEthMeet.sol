@@ -7,11 +7,8 @@ import "../contracts/EthMeetDB.sol";
 import "../contracts/EthMeetListing.sol";
 
 contract TestEthMeet {
-    event receivedAddress(address addr);
-    event receivedName(bytes32 name);
     function testUserCreation() {
         EthMeetUser userContract = EthMeetUser(DeployedAddresses.EthMeetUser());
-        receivedAddress(DeployedAddresses.EthMeetUser());
 
         Assert.equal(userContract.getUsersCount(), 0, "The name has to be same");
         userContract.setUser("testUser","testUserEmail");
