@@ -108,17 +108,6 @@ contract EthMeetDB is Ownable {
         return StringStorage[record];
     }
 
-    function getStringValueAsBytes32(bytes32 record) public view returns(bytes32 result) {
-        bytes memory tempString = bytes(getStringValue(record));
-        if (tempString.length == 0) {
-            throw;
-        }
-
-        assembly {
-            result := mload(add(tempString, 32))
-        }
-    }
-
     function setStringValue(bytes32 record, string value)
     onlyAllowedContractOrOwner
     {

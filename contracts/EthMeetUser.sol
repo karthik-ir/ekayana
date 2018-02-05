@@ -18,6 +18,11 @@ contract EthMeetUser is EthMeetSetter {
         return UserLibrary.getAllUsers(ethMeetDB);
     }
     
+
+    function getUsersCount() public view returns(uint) {
+        return UserLibrary.getAllUsers(ethMeetDB).length;
+    }
+
     function getAppliedBookings() public view returns(uint[]) {
         return UserLibrary.getAttendeeContracts(ethMeetDB, msg.sender);
     }
