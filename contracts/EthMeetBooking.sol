@@ -2,7 +2,6 @@ pragma solidity ^0.4.19;
 
 import "./EthMeetSetter.sol";
 import "./BookingLibrary.sol";
-
 import "./EthMeetWallet.sol";
 
 contract EthMeetBooking is EthMeetSetter {
@@ -22,9 +21,6 @@ contract EthMeetBooking is EthMeetSetter {
 
     function cancelBooking(uint listingId) public returns(uint bookingId) {
         bookingId = BookingLibrary.cancel(ethMeetDB, listingId, msg.sender);
-
-        //Return money to the sender
-        return bookingId;
     }
 
     function getWallet(uint listingId) public view returns(address) {
