@@ -10,9 +10,8 @@ contract EthMeetListing  is EthMeetSetter {
         ethMeetDB = _ethMeetDB;
     }
     
-    function addNewListing(string _title, uint256 _cost) public {
-        var listingID = ListingLibrary.setListing(ethMeetDB,msg.sender,0,_title,_cost);
-
+    function addNewListing(string _title, uint256 _cost) public returns(uint listingID) {
+        listingID = ListingLibrary.setListing(ethMeetDB,msg.sender,0,_title,_cost);
     } 
 
     function getBookings(uint listingId) public view returns(uint[]) {
