@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import ListingPage from './ListingPage.js'
 class Home extends Component {
   render() {
     return(
@@ -7,6 +7,8 @@ class Home extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <h1>Good to Go!</h1>
+
+            <ListingPage></ListingPage>
             <p>Your Truffle Box is installed and ready.</p>
             <h2>Smart Contract Authentication</h2>
             <p>This particular box comes with autentication via a smart contract built-in.</p>
